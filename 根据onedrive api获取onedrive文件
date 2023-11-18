@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneDrive 文件列表</title>
+</head>
+<body>
+    <h1>OneDrive 文件列表</h1>
+    <ul id="file-list"></ul>
+
+    <script>
+        // 使用 fetch 获取文件列表
+        fetch('https://graph.microsoft.com/v1.0/me/drive/root/children', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'eyJ0eXAiOiJKV1QiLCJub25jZSI6IkpFUmR1ZTRjNXA0dFdCMEV5cGVlLWp6U3MzSzNoQ08ySGtQOGU4ZmFGVGMiLCJhbGciOiJSUzI1NiIsIng1dCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSIsImtpZCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDAiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC84Yzk3ZWQyYS0yM2NkLTRiYWEtYjdiNi1jZjA4M2NhMzllMDcvIiwiaWF0IjoxNzAwMzE0NDM3LCJuYmYiOjE3MDAzMTQ0MzcsImV4cCI6MTcwMDMxODgwNSwiYWNjdCI6MCwiYWNyIjoiMSIsImFpbyI6IkFUUUF5LzhWQUFBQUR5bFIrMDZwT0doclA2SU5QTTRmMjdGaUxFNGgvQUJsN1VBcnk3NFM1RzY1ZFgxTFpwT09XcTFtNlFUQ2lsdUUiLCJhbXIiOlsicHdkIl0sImFwcF9kaXNwbGF5bmFtZSI6IumbtuWIu-WtpuWgguS4i-i9veS4reW_gyIsImFwcGlkIjoiODYwMGEyOGYtMjc4Mi00ZjM1LWJlYzEtMTUwYzcxMGJmZDdlIiwiYXBwaWRhY3IiOiIxIiwiZmFtaWx5X25hbWUiOiJUVCIsImdpdmVuX25hbWUiOiJUVCIsImlkdHlwIjoidXNlciIsImlwYWRkciI6IjIxOS4xMzcuMTQwLjIxMiIsIm5hbWUiOiJUaW1teUAzZHNjZy5jb20iLCJvaWQiOiI0ZWUwYjQ5NC00ZGUwLTQxODItYjRlZi0zZDVmYTMwYjlhYzkiLCJwbGF0ZiI6IjMiLCJwdWlkIjoiMTAwMzIwMDI5NzQ1RDc2OCIsInJoIjoiMC5BWHdBS3UyWGpNMGpxa3UzdHM4SVBLT2VCd01BQUFBQUFBQUF3QUFBQUFBQUFBQzdBSmMuIiwic2NwIjoiRmlsZXMuUmVhZFdyaXRlLkFsbCBTaXRlcy5SZWFkLkFsbCBTaXRlcy5SZWFkV3JpdGUuQWxsIFVzZXIuUmVhZCBwcm9maWxlIG9wZW5pZCBlbWFpbCIsInN1YiI6IlJJLWFyX2RfOGJkMUZtQzdFTjJlOGxCSkpBS2ttRkhocEMyTmtETmVSMzgiLCJ0ZW5hbnRfcmVnaW9uX3Njb3BlIjoiTkEiLCJ0aWQiOiI4Yzk3ZWQyYS0yM2NkLTRiYWEtYjdiNi1jZjA4M2NhMzllMDciLCJ1bmlxdWVfbmFtZSI6InRpbW15QDNkc2NnLmNvbSIsInVwbiI6InRpbW15QDNkc2NnLmNvbSIsInV0aSI6IlFUbEVSa2czT0VLejZNV09qSzZ4QUEiLCJ2ZXIiOiIxLjAiLCJ3aWRzIjpbImZlOTMwYmU3LTVlNjItNDdkYi05MWFmLTk4YzNhNDlhMzhiMSIsImYyOGExZjUwLWY2ZTctNDU3MS04MThiLTZhMTJmMmFmNmI2YyIsImYwMjNmZDgxLWE2MzctNGI1Ni05NWZkLTc5MWFjMDIyNjAzMyIsIjI5MjMyY2RmLTkzMjMtNDJmZC1hZGUyLTFkMDk3YWYzZTRkZSIsIjYyZTkwMzk0LTY5ZjUtNDIzNy05MTkwLTAxMjE3NzE0NWUxMCIsIjcyOTgyN2UzLTljMTQtNDlmNy1iYjFiLTk2MDhmMTU2YmJiOCIsImYyZWY5OTJjLTNhZmItNDZiOS1iN2NmLWExMjZlZTc0YzQ1MSIsIjY5MDkxMjQ2LTIwZTgtNGE1Ni1hYTRkLTA2NjA3NWIyYTdhOCIsImI3OWZiZjRkLTNlZjktNDY4OS04MTQzLTc2YjE5NGU4NTUwOSJdLCJ4bXNfc3QiOnsic3ViIjoiT19TM0kyZ2paR1lUdVVsLXRIZ3doOGdhdDViM1dKQzhHNDg1UlVndkFqdyJ9LCJ4bXNfdGNkdCI6MTY4MTA5MTA0Nn0.JAvlK4WORcf85bho3N7qZmgV8j_NRzG9WKUylX0PuFdlTY9RZes367AgzbJxDVJCZTYZrPqm2wK9N8TnKl_iRiB6z0W6_MeFFtBrpbjaoxx1c-apXxFpUKtDl2hXZrUoXrimcSU3qe9KrQDbcIY0JFPZQNIGQ5ITH3cBKFQS2qPEWfEYsUzxsIOwfZQcUhKTofYcVYT0N2AOh05v74Eesp90qFwlYtLkFnSJqFscXCzwfApLXozPGB_9MqHxniihYf8Gg4zm1YxBAYegJklKvDMqLkzMojZkTd3ZSDhYLBaGMsswXiUGq1V-otqbpHI43mGj59lvH3ONpRIvzUYBog' // 替换为你的访问令牌
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const fileList = document.getElementById('file-list');
+            data.value.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.name;
+                fileList.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
